@@ -1,0 +1,26 @@
+== Parsed Logical Plan ==
+'Aggregate [hashed_ip#0], [hashed_ip#0, 'count(1) AS count#13]
++- Filter (isnotnull(hashed_ip#0) AND (length(hashed_ip#0) > 0))
+   +- Project [hashed_ip#0]
+      +- Relation [hashed_ip#0,continent_name#1,country_iso_code#2,country_name#3,request_method#4,request_host#5,request_path#6,http_response_code#7,user_agent#8,token#9,date#10,referer#11] csv
+
+== Analyzed Logical Plan ==
+hashed_ip: string, count: bigint
+Aggregate [hashed_ip#0], [hashed_ip#0, count(1) AS count#13L]
++- Filter (isnotnull(hashed_ip#0) AND (length(hashed_ip#0) > 0))
+   +- Project [hashed_ip#0]
+      +- Relation [hashed_ip#0,continent_name#1,country_iso_code#2,country_name#3,request_method#4,request_host#5,request_path#6,http_response_code#7,user_agent#8,token#9,date#10,referer#11] csv
+
+== Optimized Logical Plan ==
+Aggregate [hashed_ip#0], [hashed_ip#0, count(1) AS count#13L]
++- Project [hashed_ip#0]
+   +- Filter (isnotnull(hashed_ip#0) AND (length(hashed_ip#0) > 0))
+      +- Relation [hashed_ip#0,continent_name#1,country_iso_code#2,country_name#3,request_method#4,request_host#5,request_path#6,http_response_code#7,user_agent#8,token#9,date#10,referer#11] csv
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- HashAggregate(keys=[hashed_ip#0], functions=[count(1)], output=[hashed_ip#0, count#13L])
+   +- Exchange hashpartitioning(hashed_ip#0, 2), ENSURE_REQUIREMENTS, [plan_id=17]
+      +- HashAggregate(keys=[hashed_ip#0], functions=[partial_count(1)], output=[hashed_ip#0, count#17L])
+         +- Filter (isnotnull(hashed_ip#0) AND (length(hashed_ip#0) > 0))
+            +- FileScan csv [hashed_ip#0] Batched: false, DataFilters: [isnotnull(hashed_ip#0), (length(hashed_ip#0) > 0)], Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/Users/artikhog/devProjects/big-data/lab4/data/samples/opencitati..., PartitionFilters: [], PushedFilters: [IsNotNull(hashed_ip)], ReadSchema: struct<hashed_ip:string>

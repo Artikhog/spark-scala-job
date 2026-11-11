@@ -26,7 +26,9 @@ object IpEventCount {
       spark.conf.set("spark.sql.shuffle.partitions", spark.sparkContext.defaultParallelism)
 
       val rddCounts = RddIpEventCount.count(spark, input.toString).persist(StorageLevel.MEMORY_AND_DISK)
-      val dfCounts = DataFrameIpEventCount.count(spark, input.toString).persist(StorageLevel.MEMORY_AND_DISK)
+      val dfCounts = DataFrameIpEventCount.count(spark, input.toString)
+      // dfCounts.explain("extended")
+      dfCounts.persist(StorageLevel.MEMORY_AND_DISK)
 
       val rddKeys = rddCounts.count()
       val rddRequests = rddCounts.values.fold(0L)(_ + _)
