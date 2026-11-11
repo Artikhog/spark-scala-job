@@ -1,0 +1,13 @@
+target/
+project/project/
+.bsp/
+.bloop/
+.metals/
+.idea/
+.DS_Store
+spark-warehouse/
+artifacts/
+derby.log
+metastore_db/
+data/
+__pycache__/
